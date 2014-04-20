@@ -298,7 +298,7 @@ class Sync(object):
         rules = SyncRules(src_file, dst_file, sync_type=self.dst.sync_type())
         action, changes = rules.apply()
 
-        if not action & (CREATE | UPDATE_DATA | UPDATE_ATTRS):
+        if not action & (CREATE | UPDATE_DATA): # | UPDATE_ATTRS):
             debug("File up to date: %s" % repr(dst_path))
             return None
 

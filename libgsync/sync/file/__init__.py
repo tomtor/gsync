@@ -80,7 +80,7 @@ class SyncFileInfoDatetime(object):
         return "SyncFileInfoDatetime(%s)" % repr(self.__value)
 
     def __str__(self):
-        return self.__value.strftime("%Y-%m-%dT%H:%M:%S.%fd+00:00")
+        return self.__value.strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
 
     def __secs(self):
         delta = (self.__value - self.__epoch)
@@ -147,7 +147,8 @@ class SyncFileInfo(object):
             'title': kwargs['title'],
             'modifiedDate': SyncFileInfoDatetime(kwargs['modifiedDate']),
             'mimeType': kwargs['mimeType'],
-            'description': kwargs['description'],
+            #'description': kwargs['description'],
+            'description': description,
             'statInfo': None,
             'fileSize': file_size,
             'md5Checksum': md5_sum,

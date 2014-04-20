@@ -6,6 +6,12 @@
 """The GSync Drive module that provides an interface to the Google Drive"""
 
 import os, sys, re, datetime, shelve, time
+import signal
+
+def handler(signum, frame):
+    print 'Signal handler called with signal', signum
+
+signal.signal(signal.SIGALRM, handler)
 
 from contextlib import contextmanager
 
@@ -871,7 +877,9 @@ class Drive(object):
                     while res is None:
                         debug(" * uploading next chunk...")
 
+                        signal.alarm(10)
                         status, res = req.next_chunk()
+                        signal.alarm(0) # Disable the signal
                         if status:
                             progress_callback(status)
 
