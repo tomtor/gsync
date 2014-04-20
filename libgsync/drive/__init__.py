@@ -901,7 +901,7 @@ class Drive(object):
         debug("Update failed")
         raise Exception("Update failed")
     
-    def _query(self, **kwargs):
+    def _real_query(self, **kwargs):
         """
         Performs a query against the Google Drive, returning an entity list
         that was returned by the server.  This function acts as a proxy to
@@ -948,3 +948,14 @@ class Drive(object):
                     break
 
         return ents
+    
+        
+    def _query(self, **kwargs):
+        try:
+            return self._real_query(**kwargs)
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            time.sleep(60)
+            return self._real_query(**kwargs)
+            
+            
