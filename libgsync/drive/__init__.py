@@ -275,6 +275,8 @@ class Drive(object):
         return cls._instance
 
     def __init__(self):
+        if hasattr(self, "_pcache"):
+            return
         debug("Initialising drive")
 
         self._service = None
@@ -282,6 +284,7 @@ class Drive(object):
         self._credentials = None
         self._credential_storage = None
         self._pcache = DrivePathCache()
+        self._qcache = None
 
         debug("Initialisation complete")
      
@@ -951,11 +954,19 @@ class Drive(object):
     
         
     def _query(self, **kwargs):
+        #print(kwargs)
+        #print(self._qcache)
+        if self._qcache is not None and kwargs.get("parent_id") == self._qcache:
+            #print('MATCH')
+            return self._qresult
+        self._qcache= kwargs.get("parent_id")
         try:
-            return self._real_query(**kwargs)
+            self._qresult= self._real_query(**kwargs)
+            return self._qresult
         except:
             print "Unexpected error:", sys.exc_info()[0]
             time.sleep(60)
-            return self._real_query(**kwargs)
+            self._qresult= self._real_query(**kwargs)
+            return self._qresult
             
             
