@@ -126,9 +126,8 @@ class Itemize(object):
     summary on stdout and stderr.
     """
     def __call__(self, changes, filename):
-        sys.stdout.write(u"%11s %s\n" % \
-            (unicode(changes[:11]), unicode(filename)))
-
+            sys.stdout.write(u"%11s %s\n" % \
+                (unicode(changes[:11]), unicode(filename, 'utf-8')))
 
 class Progress(object):
     """
