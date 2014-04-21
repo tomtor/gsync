@@ -954,12 +954,9 @@ class Drive(object):
     
         
     def _query(self, **kwargs):
-        #print(kwargs)
-        #print(self._qcache)
-        if self._qcache is not None and kwargs.get("parent_id") == self._qcache:
-            #print('MATCH')
+        if self._qcache is not None and kwargs == self._qcache:
             return self._qresult
-        self._qcache= kwargs.get("parent_id")
+        self._qcache= kwargs
         try:
             self._qresult= self._real_query(**kwargs)
             return self._qresult
