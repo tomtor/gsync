@@ -43,7 +43,10 @@ class Channel(object):
         """Writes messages to the buffer provided by this channel."""
 
         if self._priority >= priority:
-            sys.stdout.write(u"%s\n" % unicode(msg, 'utf-8'))
+            try:
+                sys.stdout.write(u"%s\n" % unicode(msg, 'utf-8'))
+            except:
+                sys.stdout.write(u"%s\n" % msg)
 
 
 class Debug(Channel):
