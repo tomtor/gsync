@@ -10,6 +10,7 @@ import signal
 
 def handler(signum, frame):
     print 'Signal handler called with signal', signum
+    sys.exit(2)
 
 signal.signal(signal.SIGALRM, handler)
 
@@ -880,7 +881,7 @@ class Drive(object):
                     while res is None:
                         debug(" * uploading next chunk...")
 
-                        signal.alarm(10)
+                        signal.alarm(60)
                         status, res = req.next_chunk()
                         signal.alarm(0) # Disable the signal
                         if status:
