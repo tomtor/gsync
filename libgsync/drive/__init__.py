@@ -275,6 +275,8 @@ class Drive(object):
         return cls._instance
 
     def __init__(self):
+        if hasattr(self, "_pcache"):
+            return
         debug("Initialising drive")
 
         self._service = None
@@ -282,6 +284,7 @@ class Drive(object):
         self._credentials = None
         self._credential_storage = None
         self._pcache = DrivePathCache()
+        self._qcache = None
 
         debug("Initialisation complete")
      
@@ -900,7 +903,7 @@ class Drive(object):
         raise Exception("Update failed")
     
     @retryer
-    def _query(self, **kwargs):
+    def _real_query(self, **kwargs):
         """
         Performs a query against the Google Drive, returning an entity list
         that was returned by the server.  This function acts as a proxy to
@@ -947,3 +950,11 @@ class Drive(object):
                     break
 
         return ents
+
+
+def _query(self, **kwargs):
+    if self._qcache is not None and kwargs == self._qcache:
+        return self._qresult
+    self._qcache= kwargs
+    self._qresult= self._real_query(**kwargs)
+    return self._qresult
